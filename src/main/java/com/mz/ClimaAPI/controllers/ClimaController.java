@@ -12,7 +12,7 @@ public class ClimaController {
     @Autowired
     ClimaServiceImpl climaService;
 
-    private Gson gson;
+    private Gson gson = new Gson();
 
     @GetMapping("healthcheck")
     public String healthcheck(){
@@ -22,7 +22,6 @@ public class ClimaController {
     @GetMapping("clima")
     @ResponseBody
     public String climaPorDia(@RequestParam int dia){
-
         return gson.toJson(this.climaService.obtenerClimaPorDia(dia));
     }
 

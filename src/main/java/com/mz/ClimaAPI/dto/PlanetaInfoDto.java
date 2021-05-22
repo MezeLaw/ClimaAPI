@@ -1,7 +1,5 @@
 package com.mz.ClimaAPI.dto;
 
-import com.jogamp.opengl.math.geom.Frustum;
-
 public class PlanetaInfoDto {
 
     /**

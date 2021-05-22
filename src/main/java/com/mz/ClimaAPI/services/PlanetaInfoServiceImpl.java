@@ -30,7 +30,7 @@ public class PlanetaInfoServiceImpl implements PlanetaInfoService {
         betasoide.setCoordenadaY(Math.sin(Math.toRadians(betasoide.getAnguloEnGrados())) * betasoide.getDistanciaAlSol());
 
         vulcano.setCoordenadaX(Math.cos(Math.toRadians(vulcano.getAnguloEnGrados())) * vulcano.getDistanciaAlSol());
-        vulcano.setCoordenadaY(Math.sin(Math.toRadians(vulcano.getCoordenadaX())) * vulcano.getDistanciaAlSol());
+        vulcano.setCoordenadaY(Math.sin(Math.toRadians(vulcano.getAnguloEnGrados())) * vulcano.getDistanciaAlSol());
 
         planetaInfoDto.setBetasoide(betasoide);
         planetaInfoDto.setFerengis(ferengis);
@@ -41,10 +41,42 @@ public class PlanetaInfoServiceImpl implements PlanetaInfoService {
 
     @Override
     public ClimaResponseDto obtenerClimaGalaxia(PlanetaInfoDto planetaInfoDto) {
+
+        ClimaResponseDto climaResponseDto = new ClimaResponseDto(planetaInfoDto.getBetasoide().getDia(), "Undefined");
+
         //En este motodo debo devolver el clima del dia, por lo tanto debo averiguar si son colineales entre si y/o con el sol,
         //Alineados entre si y con el sol => Sequia
         //Alineados entre si solamente => Condiciones optimas de temp y presion
         //Triangulo con sol incluido es lluvia, siendo maxima intensidad cuando el perimetro es maximo
         //Triangulo sin sol en el centro => undefined
+
+        boolean planetasAlineados = planetaInfoDto.getFerengis().getCoordenadaY() - planetaInfoDto.getBetasoide().getCoordenadaY() / planetaInfoDto.getFerengis().getCoordenadaX() - planetaInfoDto.getBetasoide().getCoordenadaX() == planetaInfoDto.getVulcano().getCoordenadaY() - planetaInfoDto.getBetasoide().getCoordenadaY() / planetaInfoDto.getVulcano().getCoordenadaX() - planetaInfoDto.getBetasoide().getCoordenadaX();
+        boolean planetasAlineadosConSol = planetaInfoDto.getFerengis().getCoordenadaY() - 0.0 / planetaInfoDto.getFerengis().getCoordenadaX() - 0.0 == planetaInfoDto.getVulcano().getCoordenadaY() - 0.0 / planetaInfoDto.getVulcano().getCoordenadaX() - 0.0;
+
+        if(planetasAlineados) {
+            planetaInfoDto.getVulcano().setClima("Condiciones optimas");
+            planetaInfoDto.getBetasoide().setClima("Condiciones optimas");
+            planetaInfoDto.getFerengis().setClima("Condiciones optimas");
+
+            climaResponseDto.setClima("Condiciones optimas");
+            climaResponseDto.setDia(planetaInfoDto.getBetasoide().getDia());
+        } else if(planetasAlineados && planetasAlineadosConSol){
+            planetaInfoDto.getVulcano().setClima("Sequia");
+            planetaInfoDto.getBetasoide().setClima("Sequia");
+            planetaInfoDto.getFerengis().setClima("Sequia");
+
+            climaResponseDto.setClima("Sequia");
+            climaResponseDto.setDia(planetaInfoDto.getBetasoide().getDia());
+        }
+
+
+        //Evaluo posicion del sol o no para determinar lluvia.
+
+        //Evaluo si es max perimetro para determinar lluvia pico
+
+
+        //
+
+        return  climaResponseDto;
     }
 }
