@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ClimaServiceImpl implements ClimaService {
 
     @Autowired
-    private PlanetaInfoService planetaInfoService;
+    private PlanetaInfoServiceImpl planetaInfoService;
 
     @Override
     public ClimaResponseDto obtenerClimaPorDia(int dia) {
