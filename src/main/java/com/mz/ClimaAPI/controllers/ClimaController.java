@@ -25,4 +25,10 @@ public class ClimaController {
         return gson.toJson(this.climaService.obtenerClimaPorDia(dia));
     }
 
+    @GetMapping("clima/diezAnos")
+    @ResponseBody
+    public String climaPorDia(){
+        return gson.toJson(this.climaService.obtenerClimaPorDia(dia));
+    }
+
 }

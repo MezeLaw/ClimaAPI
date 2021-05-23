@@ -12,9 +12,10 @@ public class PlanetaInfoServiceImpl implements PlanetaInfoService {
 
         PlanetaInfoDto planetaInfoDto = new PlanetaInfoDto();
 
-        PlanetaDto vulcano = new PlanetaDto("Vulcano", 0.0, 0.0, 0, 0, 1000, "Undefined");
-        PlanetaDto betasoide = new PlanetaDto("Betasoide", 0.0, 0.0, 0, 0, 2000, "Undefined");
-        PlanetaDto ferengis = new PlanetaDto("Ferengis", 0.0, 0.0, 0, 0, 500, "Undefined");
+        PlanetaDto vulcano = new PlanetaDto("Vulcano", 0.0, 0.0, 0, dia, 1000, "Undefined");
+        PlanetaDto betasoide = new PlanetaDto("Betasoide", 0.0, 0.0, 0, dia, 2000, "Undefined");
+        PlanetaDto ferengis = new PlanetaDto("Ferengis", 0.0, 0.0, 0, dia, 500, "Undefined");
+
 
         // Calculo los grados correspondientes y actualizo las coordenadas con trigonometría.
           // Actualizo angulos en grados segun dia
@@ -69,43 +70,75 @@ public class PlanetaInfoServiceImpl implements PlanetaInfoService {
 
             climaResponseDto.setClima("Sequia");
             climaResponseDto.setDia(planetaInfoDto.getBetasoide().getDia());
+        } else {
+
+            //Evaluo posicion del sol o no para determinar lluvia.
+            boolean solContenido = this.solContenido(planetaInfoDto.getBetasoide(), planetaInfoDto.getFerengis(), planetaInfoDto.getVulcano());
+
+            if(solContenido) {
+
+                planetaInfoDto.getVulcano().setClima("Lluvia");
+                planetaInfoDto.getBetasoide().setClima("Lluvia");
+                planetaInfoDto.getFerengis().setClima("Lluvia");
+
+                //Evaluo si es max perimetro para determinar lluvia pico
+                planetaInfoDto.setPerimetro(this.getPerimetro(planetaInfoDto.getBetasoide(), planetaInfoDto.getFerengis(), planetaInfoDto.getVulcano()));
+            }
+
         }
-
-        double perimetro = this.getPerimetro(planetaInfoDto.getBetasoide(), planetaInfoDto.getFerengis(), planetaInfoDto.getVulcano());
-
-        boolean solContenido = this.solContenido(planetaInfoDto.getBetasoide(), planetaInfoDto.getFerengis(), planetaInfoDto.getVulcano());
-
-        //Evaluo posicion del sol o no para determinar lluvia.
-
-        //Evaluo si es max perimetro para determinar lluvia pico
-
-
-        //
-
         return  climaResponseDto;
     }
 
+
+    /**
+     *  Recibe los 3 planetas y retorna el perimetro correspondiente
+     * */
     public double getPerimetro(PlanetaDto betasoide, PlanetaDto ferengis, PlanetaDto vulcano){
 
-           /**
-            *  Recibe los 3 planetas y retorna el perimetro correspondiente
-            * */
+        double ladoBetasoideFerengis = Math.abs(Math.sqrt(Math.pow((ferengis.getCoordenadaX() - betasoide.getCoordenadaX()), 2)) + Math.pow(ferengis.getCoordenadaY()-betasoide.getCoordenadaY(),2));
+        double ladoBetaSoideVulcano = Math.abs(Math.sqrt(Math.pow((vulcano.getCoordenadaX() - betasoide.getCoordenadaX()), 2)) + Math.pow(vulcano.getCoordenadaY()-betasoide.getCoordenadaY(),2));
+        double ladoVulcanoFerengis = Math.abs(Math.sqrt(Math.pow((ferengis.getCoordenadaX() - vulcano.getCoordenadaX()), 2)) + Math.pow(ferengis.getCoordenadaY()-vulcano.getCoordenadaY(),2));
 
-        return 1;
+        System.out.println("PERIMETRO >>>>>>>>>>>>> "+ ladoVulcanoFerengis+ladoBetasoideFerengis+ladoBetaSoideVulcano);
+        return ladoVulcanoFerengis+ladoBetasoideFerengis+ladoBetaSoideVulcano;
     }
+
+
+    /**
+     *  Retorna si el sol esta dentro del triangulo formado por los 3 planetas o no.
+     *
+     *  Algoritmia investigada de https://www.geeksforgeeks.org/check-whether-a-given-point-lies-inside-a-triangle-or-not/
+     *
+     * */
 
     public boolean solContenido(PlanetaDto betasoide, PlanetaDto ferengis, PlanetaDto vulcano){
-        /**
-         *  Retorna si el sol esta dentro del triangulo formado por los 3 planetas o no.
-         * */
 
 
-        return  false;
+        /* Calculate area of triangle ABC */
+        double A = area (betasoide.getCoordenadaX(), betasoide.getCoordenadaY(), ferengis.getCoordenadaX(), ferengis.getCoordenadaY(), vulcano.getCoordenadaX(), vulcano.getCoordenadaY());
+
+        /* Calculate area of triangle PBC */
+        double A1 = area (0, 0, ferengis.getCoordenadaX(), ferengis.getCoordenadaY(), vulcano.getCoordenadaX(), vulcano.getCoordenadaY());
+
+        /* Calculate area of triangle PAC */
+        double A2 = area (betasoide.getCoordenadaX(), betasoide.getCoordenadaY(), 0, 0, vulcano.getCoordenadaX(), vulcano.getCoordenadaY());
+
+        /* Calculate area of triangle PAB */
+        double A3 = area (betasoide.getCoordenadaX(), betasoide.getCoordenadaY(), ferengis.getCoordenadaX(), ferengis.getCoordenadaY(), 0, 0);
+
+        /* Check if sum of A1, A2 and A3 is same as A */
+        return (A == A1 + A2 + A3);
+
     }
 
-    public PlanetaInfoDto setClima(PlanetaInfoDto){
 
-        return null;
+    /* A utility function to calculate area of triangle
+       formed by (x1, y1) (x2, y2) and (x3, y3) */
+    static double area(double x1, double y1, double x2, double y2,
+                       double x3, double y3) {
+        return Math.abs((x1*(y2-y3) + x2*(y3-y1)+
+                x3*(y1-y2))/2.0);
     }
+
 }
 

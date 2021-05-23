@@ -25,6 +25,9 @@ public class ClimaServiceImpl implements ClimaService {
 
     @Override
     public ArrayList<ClimaResponseDto> obtenerClimaDeDiezAnos() {
+
+
+
         return null;
     }
 }
