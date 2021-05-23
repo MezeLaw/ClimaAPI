@@ -53,6 +53,8 @@ public class PlanetaInfoServiceImpl implements PlanetaInfoService {
         boolean planetasAlineados = planetaInfoDto.getFerengis().getCoordenadaY() - planetaInfoDto.getBetasoide().getCoordenadaY() / planetaInfoDto.getFerengis().getCoordenadaX() - planetaInfoDto.getBetasoide().getCoordenadaX() == planetaInfoDto.getVulcano().getCoordenadaY() - planetaInfoDto.getBetasoide().getCoordenadaY() / planetaInfoDto.getVulcano().getCoordenadaX() - planetaInfoDto.getBetasoide().getCoordenadaX();
         boolean planetasAlineadosConSol = planetaInfoDto.getFerengis().getCoordenadaY() - 0.0 / planetaInfoDto.getFerengis().getCoordenadaX() - 0.0 == planetaInfoDto.getVulcano().getCoordenadaY() - 0.0 / planetaInfoDto.getVulcano().getCoordenadaX() - 0.0;
 
+
+
         if(planetasAlineados) {
             planetaInfoDto.getVulcano().setClima("Condiciones optimas");
             planetaInfoDto.getBetasoide().setClima("Condiciones optimas");
@@ -69,6 +71,9 @@ public class PlanetaInfoServiceImpl implements PlanetaInfoService {
             climaResponseDto.setDia(planetaInfoDto.getBetasoide().getDia());
         }
 
+        double perimetro = this.getPerimetro(planetaInfoDto.getBetasoide(), planetaInfoDto.getFerengis(), planetaInfoDto.getVulcano());
+
+        boolean solContenido = this.solContenido(planetaInfoDto.getBetasoide(), planetaInfoDto.getFerengis(), planetaInfoDto.getVulcano());
 
         //Evaluo posicion del sol o no para determinar lluvia.
 
@@ -79,4 +84,28 @@ public class PlanetaInfoServiceImpl implements PlanetaInfoService {
 
         return  climaResponseDto;
     }
+
+    public double getPerimetro(PlanetaDto betasoide, PlanetaDto ferengis, PlanetaDto vulcano){
+
+           /**
+            *  Recibe los 3 planetas y retorna el perimetro correspondiente
+            * */
+
+        return 1;
+    }
+
+    public boolean solContenido(PlanetaDto betasoide, PlanetaDto ferengis, PlanetaDto vulcano){
+        /**
+         *  Retorna si el sol esta dentro del triangulo formado por los 3 planetas o no.
+         * */
+
+
+        return  false;
+    }
+
+    public PlanetaInfoDto setClima(PlanetaInfoDto){
+
+        return null;
+    }
 }
+

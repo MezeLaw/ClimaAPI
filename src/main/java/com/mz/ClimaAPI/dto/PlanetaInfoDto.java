@@ -11,7 +11,7 @@ public class PlanetaInfoDto {
     private PlanetaDto vulcano;
     private PlanetaDto betasoide;
     private PlanetaDto ferengis;
-
+    private double perimetro;
 
     public PlanetaInfoDto() {
 
@@ -45,5 +45,13 @@ public class PlanetaInfoDto {
 
     public void setFerengis(PlanetaDto ferengis) {
         this.ferengis = ferengis;
+    }
+
+    public double getPerimetro() {
+        return perimetro;
+    }
+
+    public void setPerimetro(double perimetro) {
+        this.perimetro = perimetro;
     }
 }
