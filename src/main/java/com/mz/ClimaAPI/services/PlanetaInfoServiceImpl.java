@@ -54,9 +54,12 @@ public class PlanetaInfoServiceImpl implements PlanetaInfoService {
         boolean planetasAlineados = planetaInfoDto.getFerengis().getCoordenadaY() - planetaInfoDto.getBetasoide().getCoordenadaY() / planetaInfoDto.getFerengis().getCoordenadaX() - planetaInfoDto.getBetasoide().getCoordenadaX() == planetaInfoDto.getVulcano().getCoordenadaY() - planetaInfoDto.getBetasoide().getCoordenadaY() / planetaInfoDto.getVulcano().getCoordenadaX() - planetaInfoDto.getBetasoide().getCoordenadaX();
         boolean planetasAlineadosConSol = planetaInfoDto.getFerengis().getCoordenadaY() - 0.0 / planetaInfoDto.getFerengis().getCoordenadaX() - 0.0 == planetaInfoDto.getVulcano().getCoordenadaY() - 0.0 / planetaInfoDto.getVulcano().getCoordenadaX() - 0.0;
 
+        if(planetasAlineados && !planetasAlineadosConSol){
 
+            System.out.println("Planetas alineados>>>"+ planetasAlineados);
+        }
 
-        if(planetasAlineados && !planetasAlineadosConSol) {
+        if(planetasAlineados && planetasAlineadosConSol) {
 
             planetaInfoDto.getVulcano().setClima("Sequia");
             planetaInfoDto.getBetasoide().setClima("Sequia");
@@ -64,7 +67,7 @@ public class PlanetaInfoServiceImpl implements PlanetaInfoService {
             climaResponseDto.setClima("Sequia");
 
             climaResponseDto.setDia(planetaInfoDto.getBetasoide().getDia());
-        } else if(planetasAlineados && planetasAlineadosConSol){
+        } else if(planetasAlineados && !planetasAlineadosConSol){
 
 
             planetaInfoDto.getVulcano().setClima("Condiciones optimas");
@@ -103,7 +106,7 @@ public class PlanetaInfoServiceImpl implements PlanetaInfoService {
         double ladoBetaSoideVulcano = Math.abs(Math.sqrt(Math.pow((vulcano.getCoordenadaX() - betasoide.getCoordenadaX()), 2)) + Math.pow(vulcano.getCoordenadaY()-betasoide.getCoordenadaY(),2));
         double ladoVulcanoFerengis = Math.abs(Math.sqrt(Math.pow((ferengis.getCoordenadaX() - vulcano.getCoordenadaX()), 2)) + Math.pow(ferengis.getCoordenadaY()-vulcano.getCoordenadaY(),2));
 
-        System.out.println("PERIMETRO >>>>>>>>>>>>> "+ ladoVulcanoFerengis+ladoBetasoideFerengis+ladoBetaSoideVulcano);
+        //System.out.println("PERIMETRO >>>>>>>>>>>>> "+ ladoVulcanoFerengis+ladoBetasoideFerengis+ladoBetaSoideVulcano);
         return ladoVulcanoFerengis+ladoBetasoideFerengis+ladoBetaSoideVulcano;
     }
 
