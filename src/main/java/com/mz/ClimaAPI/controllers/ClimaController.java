@@ -28,7 +28,7 @@ public class ClimaController {
     @GetMapping("clima/diezAnos")
     @ResponseBody
     public String climaPorDia(){
-        return gson.toJson(this.climaService.obtenerClimaPorDia(dia));
+        return gson.toJson(this.climaService.obtenerClimaDeDiezAnos());
     }
 
 }

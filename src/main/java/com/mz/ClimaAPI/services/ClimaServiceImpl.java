@@ -26,8 +26,14 @@ public class ClimaServiceImpl implements ClimaService {
     @Override
     public ArrayList<ClimaResponseDto> obtenerClimaDeDiezAnos() {
 
+        ArrayList<ClimaResponseDto> resultadosDiezAnos = new ArrayList<ClimaResponseDto>();
 
+        for(int i=0; i<3650; i++){
+            PlanetaInfoDto planetaInfoDto = this.planetaInfoService.obtenerPosicionesPlanetas(i);
+            ClimaResponseDto climaResponseDto = this.planetaInfoService.obtenerClimaGalaxia(planetaInfoDto);
+            resultadosDiezAnos.add(climaResponseDto);
+        }
 
-        return null;
+        return resultadosDiezAnos;
     }
 }
