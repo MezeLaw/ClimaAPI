@@ -56,19 +56,22 @@ public class PlanetaInfoServiceImpl implements PlanetaInfoService {
 
 
 
-        if(planetasAlineados) {
-            planetaInfoDto.getVulcano().setClima("Condiciones optimas");
-            planetaInfoDto.getBetasoide().setClima("Condiciones optimas");
-            planetaInfoDto.getFerengis().setClima("Condiciones optimas");
+        if(planetasAlineados && !planetasAlineadosConSol) {
 
-            climaResponseDto.setClima("Condiciones optimas");
-            climaResponseDto.setDia(planetaInfoDto.getBetasoide().getDia());
-        } else if(planetasAlineados && planetasAlineadosConSol){
             planetaInfoDto.getVulcano().setClima("Sequia");
             planetaInfoDto.getBetasoide().setClima("Sequia");
             planetaInfoDto.getFerengis().setClima("Sequia");
-
             climaResponseDto.setClima("Sequia");
+
+            climaResponseDto.setDia(planetaInfoDto.getBetasoide().getDia());
+        } else if(planetasAlineados && planetasAlineadosConSol){
+
+
+            planetaInfoDto.getVulcano().setClima("Condiciones optimas");
+            planetaInfoDto.getBetasoide().setClima("Condiciones optimas");
+            planetaInfoDto.getFerengis().setClima("Condiciones optimas");
+            climaResponseDto.setClima("Condiciones optimas");
+
             climaResponseDto.setDia(planetaInfoDto.getBetasoide().getDia());
         } else {
 
@@ -80,7 +83,8 @@ public class PlanetaInfoServiceImpl implements PlanetaInfoService {
                 planetaInfoDto.getVulcano().setClima("Lluvia");
                 planetaInfoDto.getBetasoide().setClima("Lluvia");
                 planetaInfoDto.getFerengis().setClima("Lluvia");
-
+                climaResponseDto.setDia(planetaInfoDto.getBetasoide().getDia());
+                climaResponseDto.setClima("Lluvia");
                 //Evaluo si es max perimetro para determinar lluvia pico
                 planetaInfoDto.setPerimetro(this.getPerimetro(planetaInfoDto.getBetasoide(), planetaInfoDto.getFerengis(), planetaInfoDto.getVulcano()));
             }
