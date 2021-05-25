@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(schema = "public", name="clima")
-public class ClimaResponse {
+public class Clima {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,13 +18,13 @@ public class ClimaResponse {
     private String clima;
 
 
-    public ClimaResponse(Long id, int dia, String clima) {
+    public Clima(Long id, int dia, String clima) {
         this.id = id;
         this.dia = dia;
         this.clima = clima;
     }
 
-    public ClimaResponse(){
+    public Clima(){
 
     }
 

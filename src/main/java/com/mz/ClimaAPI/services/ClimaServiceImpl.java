@@ -3,7 +3,7 @@ package com.mz.ClimaAPI.services;
 import com.google.gson.Gson;
 import com.mz.ClimaAPI.dto.ClimaResponseDto;
 import com.mz.ClimaAPI.dto.PlanetaInfoDto;
-import com.mz.ClimaAPI.models.ClimaResponse;
+import com.mz.ClimaAPI.models.Clima;
 import com.mz.ClimaAPI.repositories.ClimaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class ClimaServiceImpl implements ClimaService {
     private Gson gson = new Gson();
 
     @Override
-    public ClimaResponseDto obtenerClimaPorDia(int dia) {
+    public ClimaResponseDto calcularClimaPorDia(int dia) {
 
         PlanetaInfoDto planetaInfoDto = this.planetaInfoService.obtenerPosicionesPlanetas(dia);
 
@@ -33,19 +33,19 @@ public class ClimaServiceImpl implements ClimaService {
     }
 
     @Override
-    public ArrayList<ClimaResponse> obtenerClimaDeDiezAnos() {
+    public ArrayList<Clima> obtenerClimaDeDiezAnos() {
 
         ArrayList<ClimaResponseDto> resultadosDiezAnos = new ArrayList<ClimaResponseDto>();
         ArrayList<PlanetaInfoDto> planetaListAux = new ArrayList<PlanetaInfoDto>();
 
-        ArrayList<ClimaResponse> climaListEntity = new ArrayList<ClimaResponse>();
+        ArrayList<Clima> climaListEntity = new ArrayList<Clima>();
 
         for(int i=0; i<3650; i++){
             PlanetaInfoDto planetaInfoDto = this.planetaInfoService.obtenerPosicionesPlanetas(i);
             ClimaResponseDto climaResponseDto = this.planetaInfoService.obtenerClimaGalaxia(planetaInfoDto);
             planetaListAux.add(planetaInfoDto);
             resultadosDiezAnos.add(climaResponseDto);
-            ClimaResponse climaEntity = new ClimaResponse();
+            Clima climaEntity = new Clima();
             climaEntity.setDia(climaResponseDto.getDia());
             climaEntity.setClima(climaResponseDto.getClima());
             climaListEntity.add(climaEntity);
@@ -78,5 +78,10 @@ public class ClimaServiceImpl implements ClimaService {
         }
 
         return climaListEntity;
+    }
+
+    @Override
+    public Clima calcularClimaPorDia() {
+        return null;
     }
 }
