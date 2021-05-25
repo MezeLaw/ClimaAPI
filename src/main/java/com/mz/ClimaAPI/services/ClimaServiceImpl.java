@@ -40,7 +40,7 @@ public class ClimaServiceImpl implements ClimaService {
 
         ArrayList<ClimaResponse> climaListEntity = new ArrayList<ClimaResponse>();
 
-        for(int i=0; i<10000; i++){
+        for(int i=0; i<3650; i++){
             PlanetaInfoDto planetaInfoDto = this.planetaInfoService.obtenerPosicionesPlanetas(i);
             ClimaResponseDto climaResponseDto = this.planetaInfoService.obtenerClimaGalaxia(planetaInfoDto);
             planetaListAux.add(planetaInfoDto);
