@@ -69,7 +69,6 @@ public class PlanetaInfoServiceImpl implements PlanetaInfoService {
             climaResponseDto.setDia(planetaInfoDto.getBetasoide().getDia());
         } else if(planetasAlineados && !planetasAlineadosConSol){
 
-
             planetaInfoDto.getVulcano().setClima("Condiciones optimas");
             planetaInfoDto.getBetasoide().setClima("Condiciones optimas");
             planetaInfoDto.getFerengis().setClima("Condiciones optimas");
@@ -88,7 +87,7 @@ public class PlanetaInfoServiceImpl implements PlanetaInfoService {
                 planetaInfoDto.getFerengis().setClima("Lluvia");
                 climaResponseDto.setDia(planetaInfoDto.getBetasoide().getDia());
                 climaResponseDto.setClima("Lluvia");
-                //Evaluo si es max perimetro para determinar lluvia pico
+                //Evaluo perimetro para mas adelante analizar el maximo
                 planetaInfoDto.setPerimetro(this.getPerimetro(planetaInfoDto.getBetasoide(), planetaInfoDto.getFerengis(), planetaInfoDto.getVulcano()));
             }
 
@@ -106,7 +105,6 @@ public class PlanetaInfoServiceImpl implements PlanetaInfoService {
         double ladoBetaSoideVulcano = Math.abs(Math.sqrt(Math.pow((vulcano.getCoordenadaX() - betasoide.getCoordenadaX()), 2)) + Math.pow(vulcano.getCoordenadaY()-betasoide.getCoordenadaY(),2));
         double ladoVulcanoFerengis = Math.abs(Math.sqrt(Math.pow((ferengis.getCoordenadaX() - vulcano.getCoordenadaX()), 2)) + Math.pow(ferengis.getCoordenadaY()-vulcano.getCoordenadaY(),2));
 
-        //System.out.println("PERIMETRO >>>>>>>>>>>>> "+ ladoVulcanoFerengis+ladoBetasoideFerengis+ladoBetaSoideVulcano);
         return ladoVulcanoFerengis+ladoBetasoideFerengis+ladoBetaSoideVulcano;
     }
 

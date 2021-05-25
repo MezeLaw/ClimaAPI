@@ -3,6 +3,8 @@ package com.mz.ClimaAPI.services;
 import com.google.gson.Gson;
 import com.mz.ClimaAPI.dto.ClimaResponseDto;
 import com.mz.ClimaAPI.dto.PlanetaInfoDto;
+import com.mz.ClimaAPI.models.ClimaResponse;
+import com.mz.ClimaAPI.repositories.ClimaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,10 @@ import java.util.*;
 
 @Service
 public class ClimaServiceImpl implements ClimaService {
+
+
+    @Autowired
+    private ClimaRepository climaRepository;
 
     @Autowired
     private PlanetaInfoServiceImpl planetaInfoService;
@@ -27,16 +33,23 @@ public class ClimaServiceImpl implements ClimaService {
     }
 
     @Override
-    public ArrayList<ClimaResponseDto> obtenerClimaDeDiezAnos() {
+    public ArrayList<ClimaResponse> obtenerClimaDeDiezAnos() {
 
         ArrayList<ClimaResponseDto> resultadosDiezAnos = new ArrayList<ClimaResponseDto>();
         ArrayList<PlanetaInfoDto> planetaListAux = new ArrayList<PlanetaInfoDto>();
 
-        for(int i=0; i<3650; i++){
+        ArrayList<ClimaResponse> climaListEntity = new ArrayList<ClimaResponse>();
+
+        for(int i=0; i<10000; i++){
             PlanetaInfoDto planetaInfoDto = this.planetaInfoService.obtenerPosicionesPlanetas(i);
             ClimaResponseDto climaResponseDto = this.planetaInfoService.obtenerClimaGalaxia(planetaInfoDto);
             planetaListAux.add(planetaInfoDto);
             resultadosDiezAnos.add(climaResponseDto);
+            ClimaResponse climaEntity = new ClimaResponse();
+            climaEntity.setDia(climaResponseDto.getDia());
+            climaEntity.setClima(climaResponseDto.getClima());
+            climaListEntity.add(climaEntity);
+
         }
 
         PlanetaInfoDto planetaInfoDtoMaxPerimetro = planetaListAux
@@ -46,14 +59,24 @@ public class ClimaServiceImpl implements ClimaService {
 
         System.out.print("Info del perimetro maximo ---> "+ gson.toJson(planetaInfoDtoMaxPerimetro));
 
+        /**
+         *
+         *       List<ClimaResponseDto> listaLoca =
+         *                 resultadosDiezAnos.stream()
+         *                         .filter(elemDelFilter -> elemDelFilter.getDia() == 0 || elemDelFilter.getDia() != 0)
+         *                         .map(elemDelMap -> elemDelMap.setClima("xD"))
+         *                         .Collections.asList();
+         *
+         */
+
         boolean found = false;
-        for(int i = 0; i< resultadosDiezAnos.size() && !found; i++){
-            if(resultadosDiezAnos.get(i).getDia()==planetaInfoDtoMaxPerimetro.getBetasoide().getDia()){
-                resultadosDiezAnos.get(i).setClima("Lluvia maxima.");
+        for(int i = 0; i< climaListEntity.size() && !found; i++){
+            if(climaListEntity.get(i).getDia()==planetaInfoDtoMaxPerimetro.getBetasoide().getDia()){
+                climaListEntity.get(i).setClima("Lluvia maxima");
                 found = true;
             }
         }
 
-        return resultadosDiezAnos;
+        return climaListEntity;
     }
 }
