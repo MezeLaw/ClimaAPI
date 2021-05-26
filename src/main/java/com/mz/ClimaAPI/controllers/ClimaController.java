@@ -1,6 +1,7 @@
 package com.mz.ClimaAPI.controllers;
 
 import com.google.gson.Gson;
+import com.mz.ClimaAPI.dto.ClimaDecadaDto;
 import com.mz.ClimaAPI.models.Clima;
 import com.mz.ClimaAPI.repositories.ClimaRepository;
 import com.mz.ClimaAPI.services.ClimaServiceImpl;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("api")
@@ -64,7 +66,8 @@ public class ClimaController {
     @ResponseBody
     public ResponseEntity<String> calcularRegistrosDiezAnos(){
 
-
+        //Delete de seguridad para no seguir pisando la DB...
+        this.climaRepository.deleteAll();
         ArrayList<Clima> climaEntities = this.climaService.obtenerClimaDeDiezAnos();
 
         try {
@@ -88,8 +91,40 @@ public class ClimaController {
 
     @GetMapping("clima/resultadosDiezAnos")
     @ResponseBody
-    public String obtenerResultadosDiezAnos(){
-        return null;
+    public ResponseEntity<String> obtenerResultadosDiezAnos(){
+
+        try {
+
+            ClimaDecadaDto climaDecadaDto = new ClimaDecadaDto();
+
+            List<Clima> climaResults = (List<Clima>) climaRepository.findAll();
+
+            int sequias = (int) climaResults.stream().filter(p -> p.getClima().equals("Sequia")).count();
+            int lluvias = (int) climaResults.stream().filter(p -> p.getClima().equals("Lluvia")).count();
+            int lluviasPico = (int) climaResults.stream().filter(p -> p.getClima().equals("Lluvia maxima")).count();
+            int condicionesOptimas = (int) climaResults.stream().filter(p -> p.getClima().equals("Condiciones optimas")).count();
+
+            System.out.println("Sequias: "+ sequias );
+            System.out.println("Condiciones optimas: "+ condicionesOptimas );
+            System.out.println("Lluvias: "+ lluvias );
+            System.out.println("Lluvias pico: "+ lluviasPico );
+
+            System.out.println("Se realizo correctamente la busqueda de diez años");
+
+            climaDecadaDto.setPeriodosDeLluvia(lluvias);
+            climaDecadaDto.setPeriodosDeLluviaMaxima(lluviasPico);
+            climaDecadaDto.setPeriodosDeSequia(sequias);
+            climaDecadaDto.setPeriodosDeCondicionesOptimas(condicionesOptimas);
+
+            return new ResponseEntity<String>( gson.toJson(climaDecadaDto), HttpStatus.OK);
+
+
+        } catch (Exception e){
+            e.printStackTrace();
+            System.out.println("Ocurrio un error al intentar realizar la ejecucion.");
+            return new ResponseEntity<String>( "Ocurrio un error al intentar realizar la consulta.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
 
