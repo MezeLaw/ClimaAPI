@@ -60,7 +60,7 @@ public class ClimaController {
      *  para poder ser consultado dia a dia por el metodo anterior /clima/dia
      *
      * */
-    @GetMapping("clima/calcularDiezAnos")
+    @PostMapping("clima/calcularDiezAnos")
     @ResponseBody
     public ResponseEntity<String> calcularRegistrosDiezAnos(){
 
