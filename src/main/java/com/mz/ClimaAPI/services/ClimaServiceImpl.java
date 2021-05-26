@@ -57,7 +57,6 @@ public class ClimaServiceImpl implements ClimaService {
                 .max(Comparator.comparing(PlanetaInfoDto::getPerimetro))
                 .orElseThrow(NoSuchElementException::new);
 
-        System.out.print("Info del perimetro maximo ---> "+ gson.toJson(planetaInfoDtoMaxPerimetro));
 
         /**
          *

@@ -38,7 +38,6 @@ public class ClimaController {
         try {
             Clima clima = this.climaRepository.findByDia(dia);
 
-            System.out.println("Se realizo correctamente la busqueda por dia.");
 
             if(clima == null ){
                 return new ResponseEntity<String>("No se encontraron resultados para el dia indicado.", HttpStatus.OK);
@@ -48,7 +47,6 @@ public class ClimaController {
 
         } catch (Exception e){
             e.printStackTrace();
-            System.out.println("Ocurrio un error al intentar realizar la consulta.");
 
             return new ResponseEntity<String>("Ocurrio un error al intentar realizar la consulta.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -72,13 +70,11 @@ public class ClimaController {
 
         try {
             this.climaRepository.saveAll(climaEntities);
-            System.out.println("Se ejecuto correctamente el Job para generar el clima durante los proximos 10 años.");
 
             return new ResponseEntity<String>("La ejecucion del job fue exitosa.", HttpStatus.OK);
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Ocurrio un error al intentar ejecutar el job.");
             return new ResponseEntity<String>("Se produjeron errores al intentar realizar la ejecucion del job.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -104,12 +100,7 @@ public class ClimaController {
             int lluviasPico = (int) climaResults.stream().filter(p -> p.getClima().equals("Lluvia maxima")).count();
             int condicionesOptimas = (int) climaResults.stream().filter(p -> p.getClima().equals("Condiciones optimas")).count();
 
-            System.out.println("Sequias: "+ sequias );
-            System.out.println("Condiciones optimas: "+ condicionesOptimas );
-            System.out.println("Lluvias: "+ lluvias );
-            System.out.println("Lluvias pico: "+ lluviasPico );
 
-            System.out.println("Se realizo correctamente la busqueda de diez años");
 
             climaDecadaDto.setPeriodosDeLluvia(lluvias);
             climaDecadaDto.setPeriodosDeLluviaMaxima(lluviasPico);
@@ -121,7 +112,6 @@ public class ClimaController {
 
         } catch (Exception e){
             e.printStackTrace();
-            System.out.println("Ocurrio un error al intentar realizar la ejecucion.");
             return new ResponseEntity<String>( "Ocurrio un error al intentar realizar la consulta.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
