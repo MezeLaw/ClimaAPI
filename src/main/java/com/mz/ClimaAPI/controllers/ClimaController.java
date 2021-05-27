@@ -39,7 +39,6 @@ public class ClimaController {
         try {
             Clima clima = this.climaRepository.findByDia(dia);
 
-
             if(clima == null ){
                 return new ResponseEntity<String>("No se encontraron resultados para el dia indicado.", HttpStatus.OK);
             } else {
