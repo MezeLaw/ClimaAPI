@@ -44,7 +44,7 @@ Algunas aclaraciones:
 6) En la DB se almacenan registros del tipo del response del API requerido, por eso pueden visualizarse muchas conversiones desde lo planteado para calcular los pronosticos hasta ellos mismos.
 7) Tanto el API Rest como la db no local, se hostearon en AWS, con los servicios correspondientes para cada uno.
 8) Se agrego un Swagger para obtener una documentación básica del API.
-9) Por temas de tiempo, se realizó en Java, pero la idea inicial era implementarlo en Go.
+9) Por temas de tiempo, se realizó en Java con el SDK 8, pero la idea inicial era implementarlo en Go.
 
 Desde ya muchas gracias, quedo atento.
 
