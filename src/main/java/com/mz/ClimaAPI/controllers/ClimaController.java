@@ -2,6 +2,7 @@ package com.mz.ClimaAPI.controllers;
 
 import com.google.gson.Gson;
 import com.mz.ClimaAPI.dto.ClimaDecadaDto;
+import com.mz.ClimaAPI.dto.ClimaResponseDto;
 import com.mz.ClimaAPI.models.Clima;
 import com.mz.ClimaAPI.repositories.ClimaRepository;
 import com.mz.ClimaAPI.services.ClimaServiceImpl;
@@ -42,7 +43,10 @@ public class ClimaController {
             if(clima == null ){
                 return new ResponseEntity<String>("No se encontraron resultados para el dia indicado.", HttpStatus.OK);
             } else {
-                return new ResponseEntity<String>(gson.toJson(clima), HttpStatus.OK);
+                ClimaResponseDto climaResponseDto = new ClimaResponseDto();
+                climaResponseDto.setClima(clima.getClima());
+                climaResponseDto.setDia(clima.getDia());
+                return new ResponseEntity<String>(gson.toJson(climaResponseDto), HttpStatus.OK);
             }
 
         } catch (Exception e){
